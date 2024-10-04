@@ -45,6 +45,7 @@ contract BetCandidate {
         require(candidate == 1 || candidate == 2, 'Invalid Candidate');
         require(msg.value > 0, 'Invalid bet');
         require(dispute.winner == 0, 'Dispute closed');
+        require(allBets[msg.sender].candidate == 0, 'User placed the bet');
 
         Bet memory newBet;
         newBet.amount = msg.value;
