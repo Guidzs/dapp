@@ -29,11 +29,11 @@ export default function Home() {
             <h1 className="display-5 fw-bold text-body-emphasis lh-1 mb-3">BetCandidate</h1>
             <p className="lead">Apostas on-chain!</p>
             <p className="lead">Agora no mundo pokemon</p>
-            <p className="lead">Autentique-se com sua carteira ou pokedex e deixe a sua aposta para a proxima disputa</p>
+            <p className="lead">Autentique-se com sua carteira ou usando uma pokedex e deixe a sua aposta para a proxima disputa</p>
             <div className="d-flex justify-content-start">
               <button className="btn btn-primary btn-lg px-4" onClick={btnLoginClick}>
                 <img src="/metamask.svg" width={64} className="me-3" />
-                Conectar MetaMask
+                Conectar com a MetaMask
               </button>
             </div>
           </div>

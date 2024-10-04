@@ -19,14 +19,21 @@ export default function Home() {
                 <h3 className="my-2 d-block mx-auto" style={{width: 250}}>
                     Lucario
                 </h3>
-                <img src="https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/448.png" className="d-block mx-auto img-fluid rounded"/>
+                <img src="https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/448.png" className="d-block mx-auto img-fluid rounded" width={250}/>
+                <button className="btn btn-primary p-2 my-2 d-block mx-auto" style={{width: 250}}>Aposto nesse pokemon</button>
+                <span className="badge text-bg-secondary d-block mx-auto" style={{width: 250}}>0 POL Apostados</span>
             </div>
             <div className="col">
                 <h3 className="my-2 d-block mx-auto " style={{width: 250}}>
                     Goundom
                 </h3>
-                <img src="https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/383.png" className="d-block mx-auto img-fluid rounded"/>
+                <img src="https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/383.png" className="d-block mx-auto img-fluid rounded" width={250}/>
+                <button className="btn btn-primary p-2 my-2 d-block mx-auto" style={{width: 250}}>Aposto nesse pokemon</button>
+                <span className="badge text-bg-secondary d-block mx-auto" style={{width: 250}}>0 POL Apostados</span>
             </div>
+        </div>
+        <div className="row align-items-center">
+            <p className="message"></p>
         </div>
         <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
           <p className="col-4 mb-0 text-body-secondary">
