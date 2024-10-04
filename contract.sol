@@ -25,7 +25,7 @@ contract BetCandidate {
     mapping(address => Bet) public allBets;
     
     address owner;
-    uint fee = 1000; // taxa de comição (contas monetarias na blockchain são feitas com inteiros)
+    uint fee = 1000; // taxa de comição (contas monetarias na blockchain são feitas com inteiros escala de 4 zeros)
     uint public netPrize;
 
     constructor() {
@@ -59,6 +59,14 @@ contract BetCandidate {
             dispute.total2 += msg.value;
     }
 
+    function withdraw_comission(Dispute memory d_) private  {
+        uint grossPrize = d_.total1 + d_.total2;
+        uint comission = (grossPrize * fee) / 1e4;
+        netPrize = grossPrize - comission;
+
+        payable(owner).transfer(comission);
+    }
+
     function finish(uint winner) external {
         require(msg.sender == owner, 'Invalid account');
         require(winner == 1 || winner == 2, 'Invalid candidate');
@@ -66,11 +74,7 @@ contract BetCandidate {
 
         dispute.winner = winner;
 
-        uint grossPrize = dispute.total1 + dispute.total2;
-        uint comission = (grossPrize * fee) / 1e4;
-        netPrize = grossPrize - comission;
-
-        payable(owner).transfer(comission);
+        withdraw_comission(dispute);
     }
 
     function claim() external  {
