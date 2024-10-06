@@ -30,6 +30,18 @@ export async function getDispute() {
 export async function palceBet(candidate, amountInEth) {
     const contract = getContract();
     return contract.methods.bet(candidate).send({
-        value: Web3.utils.toWei(amountInEth, "ether")
+        value: Web3.utils.toWei(amountInEth, "ether"),
+        gas: 999999,
+        gasPrice: "99999999999"
     });
+}
+
+export async function finishDispute(winner) {
+    const contract = getContract();
+    return contract.methods.finish(winner).send();
+}
+
+export async function claimPrize() {
+    const contract = getContract();
+    return contract.methods.claim().send();
 }

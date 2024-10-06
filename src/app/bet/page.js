@@ -1,7 +1,7 @@
 "use client"
 
 import Web3 from "web3";
-import { getDispute, palceBet } from "@/services/Web3Service";
+import { getDispute, palceBet, claimPrize } from "@/services/Web3Service";
 import Head from "next/head";
 import {useRouter} from "next/navigation";
 import { useState } from "react";
@@ -18,6 +18,8 @@ export default function Bet() {
     image2: "https://i.pinimg.com/originals/20/97/65/209765b3389f6d728783e6dadf47b67e.png",
     total1: 0,
     total2: 0,
+    bettors1: 0,
+    bettors2: 0,
     winner: 0
   })
 
@@ -50,6 +52,18 @@ export default function Bet() {
       })
   }
 
+  function btnClaimclick() {
+    setMessage("Conectando na carteira...aguarde...")
+    claimPrize()
+      .then(() => {
+        alert("Prêmio coletado com sucesso. Pode demorar 1 minuto para que apareça na sua carteira.");
+        setMessage("");
+      })
+      .catch(err => {
+        console.error(err);
+        setMessage(err.message);
+      })
+  }
   return (
     <>
       <Head>
@@ -62,24 +76,45 @@ export default function Bet() {
             <h1 className="display-5 fw-bold text-body-emphasis lh-1 mb-3">BetCandidate</h1>
             <p className="lead">Aposte seus conhecimentos de treinador pokemon</p>
             <p className="lead">com o mundo para ver qual leva a melhor!</p>
+            {
+              dispute.winner == 0
+              ? <p className="lead">Você tem ate o dia da eleição para deixar sua aposta.</p>
+              : <p className="lead">Disputa encerrada. Veja o vencedor abaixo e solicite seu prêmio.</p>
+            }
         </div>
         <div className="row flex-lg-row align-items-center g-5 py-5">
-            <div className="col">
+           {
+              dispute.winner == 0 || dispute.winner == 1
+              ? <div className="col">
                 <h3 className="my-2 d-block mx-auto" style={{width: 250}}>
                     {dispute.candidate1}
                 </h3>
                 <img src={dispute.image1} className="d-block mx-auto img-fluid rounded" width={250}/>
-                <button onClick={() => renderBet(1)} className="btn btn-primary p-2 my-2 d-block mx-auto" style={{width: 250}}>Aposto nesse pokemon</button>
+                {
+                  dispute.winner == 0
+                  ? <button onClick={() => renderBet(1)} className="btn btn-primary p-2 my-2 d-block mx-auto" style={{width: 250}}>Aposto nesse pokemon</button>
+                  : <button onClick={btnClaimclick} className="btn btn-primary p-2 my-2 d-block mx-auto" style={{width: 250}}>Pegar meu prêmio</button>
+                }
+                
                 <span className="badge text-bg-secondary d-block mx-auto" style={{width: 250}}>{Web3.utils.fromWei(dispute.total1, "ether")} POL Apostados</span>
-            </div>
-            <div className="col">
+              </div> : <></>
+           }
+           {
+              dispute.winner == 0 || dispute.winner == 2
+              ? <div className="col">
                 <h3 className="my-2 d-block mx-auto " style={{width: 250}}>
                   {dispute.candidate2}
                 </h3>
                 <img src={dispute.image2} className="d-block mx-auto img-fluid rounded" width={250}/>
-                <button onClick={() => renderBet(2)} className="btn btn-primary p-2 my-2 d-block mx-auto" style={{width: 250}}>Aposto nesse pokemon</button>
+                {
+                  dispute.winner == 0
+                  ? <button onClick={() => renderBet(2)} className="btn btn-primary p-2 my-2 d-block mx-auto" style={{width: 250}}>Aposto nesse pokemon</button>
+                  : <button onClick={btnClaimclick} className="btn btn-primary p-2 my-2 d-block mx-auto" style={{width: 250}}>Pegar meu prêmio</button>
+                }
                 <span className="badge text-bg-secondary d-block mx-auto" style={{width: 250}}>{Web3.utils.fromWei(dispute.total2, "ether")} POL Apostados</span>
-            </div>
+              </div> : <></>
+            }
+            
         </div>
         <div className="row align-items-center">
             <p className="message">{message}</p>

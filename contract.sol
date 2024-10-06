@@ -21,11 +21,11 @@ struct Dispute {
 
 contract BetCandidate {
 
-    Dispute public  dispute;
+    Dispute public dispute;
     mapping(address => Bet) public allBets;
     
-    address owner;
-    uint fee = 1000; // taxa de comição (contas monetarias na blockchain são feitas com inteiros escala de 4 zeros)
+    address immutable owner;
+    uint constant fee = 1000; // taxa de comição (contas monetarias na blockchain são feitas com inteiros escala de 4 zeros)
     uint public netPrize;
 
     constructor() {
@@ -37,6 +37,8 @@ contract BetCandidate {
             image2: 'https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/448.png',
             total1: 0,
             total2: 0,
+            bettors1: 0,
+            bettors2: 0,
             winner: 0
         });
     }
@@ -56,8 +58,10 @@ contract BetCandidate {
 
         if(candidate == 1)
             dispute.total1 += msg.value;
+            dispute.bettors1 += 1;
         else
             dispute.total2 += msg.value;
+            dispute.bettors2 += 1;
     }
 
     function withdraw_comission(Dispute memory d_) private  {
