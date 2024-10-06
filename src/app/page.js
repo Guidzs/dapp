@@ -2,12 +2,23 @@
 
 import Head from "next/head";
 import {useRouter} from "next/navigation";
+import { useState } from "react";
+import { doLogin } from "@/services/Web3Service";
 
 export default function Home() {
   const {push} = useRouter()
 
+  const [message, setMessage] = useState()
+
   function btnLoginClick() {
-    push("/bet")
+    // push("/bet")
+    setMessage("Conectando na carteira...aguarde...")
+    doLogin()
+      .then(account => push("/bet"))
+      .catch(err => {
+        console.error(err);
+        setMessage(err.message);
+      })
   }
 
   return (
@@ -37,7 +48,7 @@ export default function Home() {
               </button>
             </div>
           </div>
-          <p className="message"></p>
+          <p className="message">{message}</p>
         </div>
         <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
           <p className="col-4 mb-0 text-body-secondary">
